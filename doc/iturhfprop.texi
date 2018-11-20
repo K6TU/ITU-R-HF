@@ -1,0 +1,823 @@
+\input texinfo   @c -*-texinfo-*-
+@comment $Id@w{$}
+
+@comment Process this file with the following command to create a pdf;
+@comment 'texi2pdf -c iturhfprop.texi'
+
+@comment %**start of header
+@set UPDATED November 2018
+@settitle ITURHFProp Manual @value{UPDATED}
+@afourpaper
+@comment %**end of header
+@syncodeindex vr cp
+@paragraphindent 0
+
+@comment uncomment the following line for single sided printing.
+@comment @setchapternewpage on
+@comment uncomment the following line for double sided printing.
+@setchapternewpage odd
+
+@copying
+This manual is for ITURHFProp (@value{UPDATED}),
+
+Copyright @copyright{} 2018 Somebody
+@end copying
+
+@dircategory ITURHFProp
+@direntry
+* sample: (sample)Invoking sample.
+@end direntry
+
+@titlepage
+@title ITURHFProp
+@subtitle @value{UPDATED}
+@author A.U.Thor (@email{someone@@mail.com})
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top GNU Sample
+
+This manual is for ITURHFProp (ITURHFProp@value{UPDATED}).
+@end ifnottex
+
+@menu
+* Invoking ITURHFProp::
+* GNU Free Documentation License::
+* Index::
+@end menu
+
+@node Introduction
+@chapter Introduction
+This program's sole purpose is to act as an input and output data wrapper
+for P533(). This routine is as an example of how the P533() model can be used
+in other applications.
+
+ITURHFProp is written in C by Chris Behm and is available
+for both Windows and Linux platforms. ITURHFProp is a console based application
+and does not come with any form of GUI.
+
+@node Installation
+@chapter Installation
+@cindex Installation
+
+ITURHFProp requires the presence of the P533 and P372 libraries in addition
+to a repository of coefficient data containing the following files;
+
+@example
+COEFF01W.txt   COEFF08W.txt   ionos03.bin   ionos10.bin
+COEFF02W.txt   COEFF09W.txt   ionos04.bin   ionos11.bin
+COEFF03W.txt   COEFF10W.txt   ionos05.bin   ionos12.bin
+COEFF04W.txt   COEFF11W.txt   ionos06.bin  'P1239-3 Decile Factors.txt'
+COEFF05W.txt   COEFF12W.txt   ionos07.bin
+COEFF06W.txt   ionos01.bin    ionos08.bin
+COEFF07W.txt   ionos02.bin    ionos09.bin
+@end example
+
+@node Linux
+@section Linux
+@cindex Linux
+
+
+A Linux specific Makefile is provided to simplify Installation on Linux
+platforms.  The following steps are required to install the application using
+this script;
+
+@example
+$ cd Linux
+$ make clean
+$ make
+$ sudo make install @r{(Installs the binary and library files)}
+$ sudo ldconfig
+$ sudo make install-data @r{(Installs the data files)}
+@end example
+
+The above will build the application and install it along with a man page under
+@file{/usr/local/}.  The data repository will be installed under
+@file{/usr/local/share/p533}.  With this configuration, ITURHFProp input files
+should have the @code{DataFilePath}  set as follows
+(@xref{ITURHFProp Input File Structure}).
+
+@example
+DataFilePath "/usr/local/share/p533/data/"
+@end example
+
+@node Invoking ITURHFProp
+@chapter Invoking ITURHFProp
+@cindex Invoking @command{ITURHFProp}
+
+ITURHFProp is run from the command line using a command with the following
+structure;
+
+@example
+ITURHFProp [-csthv] input-file [output-file]
+@end example
+
+The simplest invocation just defines an input file as follows;
+
+@example
+ITURHFProp myInputFile
+@end example
+
+This will call the application, saving the results in a file name created
+using a timestamp, e.g. @file{.RPTddmmyy-hhnnss.txt} where the report file
+is time stamped:
+
+@example
+dd = day
+mm = month
+yy = year
+hh = hour
+nn = minute
+ss = seconds
+@end example
+
+@cartouche
+@strong{Note:} The `.' prefix causes auto generated report file names to be
+recognised as a hidden-file on Linux systems.  It is recommended that the
+output filename is always defined by the user.
+@end cartouche
+
+The output file may be provided as a second argument as follows;
+
+@example
+ITURHFProp myInputFile myOutputFile
+@end example
+
+ITURHFProp does not impose any file naming conventions and allowing the user to
+adopt any naming scheme to suit their particular work flow, e.g. @file{.txt},
+@file{.in}, @file{.out} etc.
+
+ITURHFProp supports a number of command line arguments that may be used to
+define the format of the output file.
+
+@table @option
+@item -c
+CSV. Create RFC4180 compliant CSV output. The first line of the file is a header with
+the same format as the subsequent record lines. The header contains names
+corresponding to the fields in the file and contains the same number of
+fields as the records in the rest of the file. This type of file may be
+opened directly with the Python CVS module, supporting access to
+the records as a dictionary.  Selecting this option also removes the header
+data.  The example below illustrates a sample of this file format;
+
+@example
+month,hour,frequency,OPMUF,PR,BCR
+11,1,14.10,5.52,-154.60,0.00
+11,2,14.10,4.86,-154.62,0.00
+11,3,14.10,7.43,-149.19,1.95
+11,4,14.10,12.14,-132.49,46.87
+11,5,14.10,14.88,-120.73,79.85
+11,6,14.10,16.87,-110.00,93.02
+@end example
+
+@item -v
+Version. Prints the version numbers of ITURHFProp and the associated P533/P372
+libraries and exits the application.
+
+@item -h
+Help. Prints a short help message and exits the application.
+
+@item -s
+Silent.  Suppress printing progress messages to standard out while processing.
+Error messages are still reported to the screen.
+
+@item -t
+Table.  Strip the header, saving only the CSV table to the output file.
+
+@example
+11, 01,  14.10,   5.52,-154.60,   0.00
+11, 02,  14.10,   4.86,-154.62,   0.00
+11, 03,  14.10,   7.43,-149.19,   1.95
+11, 04,  14.10,  12.14,-132.49,  46.87
+11, 05,  14.10,  14.88,-120.73,  79.85
+11, 06,  14.10,  16.87,-110.00,  93.02
+@end example
+
+@end table
+
+Some examples of invoking ITURHFProp;
+
+@example
+$ ITURHFProp -h
+$ ITURHFProp -s p2pSample.in p2pSample.out
+$ ITURHFProp -s -t p2pSample.in p2pSample.out
+$ ITURHFProp -c p2pSample.in p2pSample.out
+@end example
+
+@node ITURHFProp Input File Structure
+@chapter ITURHFProp Input File Structure
+@cindex Input File
+
+ITURHFProp reads processing input from a formatted text file.  Input parameters
+may appear in any order
+
+Output files are either a CSV table or a Path dump text file.
+
+Comment lines in an ITURHFProp input file begin with two forward slashes "//",
+blank lines are ignored.
+
+String fields, such as the transmitter name or path name etc., must appear
+between quotes.
+
+Directory paths (e.g. to data files) must end in a file path separator
+(`\' for Windows, `/' for Linux/Mac OS).
+
+@table @code
+@vindex comment
+@item //
+Comment line.  Comments are not reproduced in the output file.
+
+@vindex PathName
+@item PathName
+Text name of path which will be printed in the output file. This string has no
+bearing on the calculations and is provided as a user convenience.
+
+Example;
+
+@example
+PathName "London - Tangier, SSB, 400W"
+@end example
+
+@vindex PathTXName
+@item PathTXName
+Text name of transmitting site.  This string has no bearing on the calculations
+and is provided for user convenience.
+
+Example;
+
+@example
+PathTXName "London"
+@end example
+
+@vindex Path.L_tx.lat
+@item Path.L_tx.lat
+Transmit antenna latitude in decimal degrees -90.0 to 90.0
+
+Example;
+
+@example
+Path.L_tx.lat 34.5
+@end example
+
+@vindex Path.L_tx.lng
+@item Path.L_tx.lng
+Transmit antenna longitude in decimal degrees -180.0 to 180.0
+
+Example;
+
+@example
+Path.L_tx.lng -24.4
+@end example
+
+@vindex TXAntFilePath
+@item TXAntFilePath
+Path and filename to transmitter antenna pattern or ``ISOTROPIC''. The path
+may be expressed relative to the working directory or as a full system
+path (recommended).
+
+Examples;
+
+@example
+TXAntFilePath "ISOTROPIC"
+TXAntFilePath "C:\path_to_dir\my_antenna.n13" @r{(Windows)}
+TXAntFilePath "/path_to_dir/my_antenna.n13" @r{(Linux)}
+@end example
+
+@vindex TXGOS
+@item TXGOS
+Transmit antenna gain offset (in dB), typically this is 0.0.
+
+@vindex PathRXName
+@item PathRXName
+Text name of receiving site
+
+@vindex Path.L_rx.lat
+@item Path.L_rx.lat
+Receive antenna latitude in decimal degrees -90.0 to 90.0
+
+@vindex Path.L_rx.lng
+@item Path.L_rx.lng
+Receive antenna longitude in decimal degrees -180.0 to 180.0
+
+@vindex RXAntFilePath
+@item RXAntFilePath
+Path and filename to transmitter antenna pattern or "ISOTROPIC". The path
+may be expressed relative to the working directory or as a full system
+path (recommended).
+
+@vindex RXGOS
+@item RXGOS
+Receive antenna gain offset (in dB), typically this is 0.0
+
+@vindex AntennaOrientation
+@item AntennaOrientation
+Orientation of antenna, ``@code{TX2RX}'' when transmit antenna points to receive
+antenna or ``ARBITRARY'' when user defined.  Antenna bearings default to
+0 degrees (North) if the bearing is not specified with the
+TXBearing / RXBearing parameters.
+
+@vindex TXBearing
+@item TXBearing
+Bearing of the transmit antenna expressed in degrees clockwise from
+North, between 0@textdegree{} and 360@textdegree{}. This value will only
+represent the main beam of the antenna file has the main beam at 0@textdegree{}.
+This parameter is optional and only used when AntennaOrientation is set
+to ``@code{ARBITRARY}''.
+
+@vindex Path.year
+@item Path.year
+Path year, between 1900 and 2100.  This parameter is used as a label
+and is not used in calculations.
+
+@vindex Path.month
+@item Path.month
+Path month, from 1 to 12.
+
+@vindex Path.hour
+@item Path.hour
+Path hour in UTC, from 1 to 24. This can be a comma separated list of
+integers i.e, 1,4,7,18.
+
+@vindex Path.SSN
+@item Path.SSN
+Sunspot number R12, between 1 and 311.
+
+@vindex Path.frequency
+@item Path.frequency
+Frequency (MHz), between 1.6 and 30.0. This can be a comma separated list of
+decimal values i.e, 3.45, 11.553, 17.7756, 23.0008.
+
+@vindex Path.txpower
+@item Path.txpower
+Transmit power (dB(kW)), between -30.0 and 60.0.
+
+@vindex Path.BW
+@item Path.BW
+Bandwidth (Hz), between 0.005 to 3000000.0.
+
+@vindex Path.SNRr
+@item Path.SNRr
+Required Signal-to-noise ratio (dB), between -30.0 and 200.0.
+
+@vindex Path.SNRXXp
+@item Path.SNRXXp
+Percent of month in which signal-to-noise exceed, between 1 and 99.
+
+@vindex Path.ManMadeNoise
+@item Path.ManMadeNoise
+Path noise environment, "CITY", "RESIDENTIAL", "RURAL", "QUIETRURAL","QUIET",
+"NOISY" or in dB, between 100.0 AND 200.0.
+
+@vindex Path.Modulation
+@item Path.Modulation
+Modulation type, ``ANALOG'' or ``DIGITAL''.  If the modulation type is
+set to ``@code{DIGITAL}'', the parameters defined in section ?? may also
+be used in the input file.
+
+@vindex Path.SorL
+@item Path.SorL
+Path between the Transmitter and Receiver either ``SHORTPATH'' or ``LONGPATH''
+
+@vindex RptFilePath
+@item RptFilePath
+The program outputs CSV text files starting with the prefix RPT for a report
+file and PDD for a path dump text file. A time stamped text file is only
+created in the directory indicated by RptFilePath if no filename is given on
+the command line. The RPT or PDD filename format described below for DUMPPATH.
+
+@vindex RptFileFormat
+@item RptFileFormat
+The value of this parameter defines the content of the analysis.  One or more
+data types may be defined.  If multiple data types are required, they must be
+separated with a`|' character as shown in the examples below.
+@xref{Report Options} for a list of valid report format values.
+
+The order that the desired parameters appear in the output file is fixed and
+does depend on the order in which the report options are specified.
+
+@example
+RptFileFormat "RPT_BCR"
+RptFileFormat "RPT_OPMUF | RPT_BCR | RPT_PR | RPT_SNR"
+RptFileFormat "RPT_DUMPPATH"
+@end example
+
+The last example above illustrates the use of a special report type called
+@code{RPT_DUMPPATHDATA} which may be used as a single option. The option,
+@code{RPT_DUMPPATHDATA}, typically is used for troubleshooting and for
+detailed analysis that may be required for point-to-point links. This option
+generates a large amount of data.
+
+@code{RPT_DUMPPATHDATA} outputs most of the calculated values. Note the output from
+this option is path length dependent. Note for links that are > 9000 km the
+output printed by the option, @code{RPT_DUMPPATHDATA}, only applies to a small number
+of the control and penetration points necessary to do the prediction.
+
+The file created by the option is named @file{PDDddmmyy-hhnnss.txt} where
+the path data dump file is time stamped:
+@example
+dd = day
+mm = month
+yy = year
+hh = hour
+nn = minute
+ss = seconds
+@end example
+
+
+@vindex DataFilePath
+@item DataFilePath
+The path to the data directory containing the coefficient files.
+
+@end table
+
+@node Report Options
+@section Report Options
+The RptFileFormat indicates to ITURHFProp what data outputs are desired.
+The options can be entered in any order, except @code{OPTION RPT_DUMPPATH}
+which must appear alone. The output file will indicate how the desired
+output parameters are ordered.
+
+The supported report output data options are;
+
+@table @code
+@vindex RPT_D
+@item RPT_D
+Path distance (km)
+
+@vindex RPT_DMAX
+@item RPT_DMAX
+Path dmax (km) and Slant Range (km)
+
+@vindex RPT_ELE
+@item RPT_ELE
+Path elevation (rad)
+
+@vindex RPT_BMUF
+@item RPT_BMUF
+Path basic MUF (MHz)
+
+@vindex RPT_BMUFD
+@item RPT_BMUFD
+BMUF deciles MUF50, MUF90 & MUF10
+
+@vindex RPT_OPMUF
+@item RPT_OPMUF
+Operational MUF (MHz)
+
+@vindex RPT_OPMUFD
+@item RPT_OPMUFD
+OPMUF deciles OPMUF90, OPMUF10
+
+@vindex RPT_N0_F2
+@item RPT_N0_F2
+Lowest order F2 layer mode
+
+@vindex RPT_N0_E
+@item RPT_N0_E
+Lowest order E layer mode
+
+@vindex RPT_E
+@item RPT_E
+Field Strength (dB(1uV/m)) Es, El or Ei depending on distance
+
+@vindex RPT_PR
+@item RPT_PR
+Median received power, Pr, and the receive antenna gain, Grw
+
+@vindex RPT_NOISESOURCES
+@item RPT_NOISESOURCES
+Noise (Atmospheric) FaA, (Man-made) FaM & (Galactic) FaG (dB)
+
+@vindex RPT_NOISESOURCESD
+@item RPT_NOISESOURCESD
+DuA, DlA, DuM, DlM, DuG, & DlG Noise component deciles (dB)
+
+@vindex RPT_NOISETOTALD
+@item RPT_NOISETOTALD
+DuT & DlT Total noise deciles (dB)
+
+@vindex RPT_NOISETOTAL
+@item RPT_NOISETOTAL
+Total Noise, FamT (dB)
+
+@vindex RPT_SNR
+@item RPT_SNR
+Signal-to-noise ratio (dB)
+
+@vindex RPT_SNRD
+@item RPT_SNRD
+SNR Deciles DuSN & DlSN
+
+@vindex RPT_SNRXX
+@item RPT_SNRXX
+Signal-to-noise ratio (dB) at the desired reliability XX %
+
+@vindex RPT_SIR
+@item RPT_SIR
+Signal-to-interference ratio (dB)
+
+@vindex RPT_SIRD
+@item RPT_SIRD
+SIR decile variations DuSI & DlSI
+
+@vindex RPT_RSN
+@item RPT_RSN
+Digital modulation performance parameters RSN, RT & RF
+
+@vindex RPT_BCR
+@item RPT_BCR
+Basic Circuit Reliability (%)
+
+@vindex RPT_OCR
+@item RPT_OCR
+Overall Circuit Reliability (%) without the consideration of scattering
+
+@vindex RPT_OCRS
+@item RPT_OCRS
+Overall Circuit Reliability (%) considering of scattering and Probocc (%)
+
+@vindex RPT_MIR
+@item RPT_MIR
+Digital Modulation Multimode interference ratio (%)
+
+@vindex RPT_RXLOCATION
+@item RPT_RXLOCATION
+Receiver location
+
+@vindex RPT_DOMMODE
+@item RPT_DOMMODE
+Dominant Mode only relevant to short paths < 7000 km
+
+@vindex RPT_GRW
+@item RPT_GRW
+For path distances <= 7000 km, Grw is the "lossless receiving
+antenna of gain (dB relative to an isotropic radiator) in the
+direction of signal incidence". Grw will be the dominant mode gain.
+For path distances >= 9000 km, Grw is the "largest value of
+receiving antenna gain at the required azimuth in the elevation
+range 0 to 8 degrees."
+
+@vindex RPT_ESL
+@item RPT_ESL
+Field Strength (dB(1uV/m)) Es and El
+
+@vindex RPT_LONG
+@item RPT_LONG
+Long path parameters Gap, E0, fM, fL, Ly and K[2]
+
+@vindex RPT_ALL
+@item RPT_ALL
+All of the above
+
+@vindex RPT_DUMPPATH
+@item RPT_DUMPPATH
+A special report type which may be used as a single option. @code{RPT_DUMPPATHDATA} is
+typically used for troubleshooting and for detailed analysis that may
+be required for point-to-point links. This option generates a large amount of data.
+
+@end table
+
+
+
+@node Digital Mode Input Parameters
+@section Digital Mode Input Parameters
+The following six options @code{Path.SIRr}, @code{Path.A}, @code{Path.TW},
+@code{Path.FW}, @code{Path.T0} and @code{Path.F0}) are applicable only
+when the Path.Modulation is ``@code{DIGITAL}'';
+
+@table @code
+@item Path.SIRr
+Required Signal-to-interference ratio (dB), between -30.0 and 200.0
+
+@item Path.A
+Required Amplitude Ratio (dB), between 0.0 and 50.0
+
+@item Path.TW
+Time window (ms), between 0.0 and 50.0
+
+@item Path.FW
+Frequency window (Hz), between 0.0 and 1000.0
+
+@item Path.T0
+Time spread for simple BCR (ms), between 0.0 and 1000.0
+
+@item Path.F0
+Frequency dispersion for simple BCR (Hz), between 0.0 and 1000.0
+
+@end table
+
+@node Defining the Analysis Area
+@section Defining the Analysis Area
+ITURHFProp supports analysis of both Point-to-Point and Area coverage circuits.
+In both cases, the analysis area is specified as a rectange
+encompassing the geographic region of interest. The convention for coordinates
+is up is north (positive values) and right is East (positive values).
+
+Point-to-Point predictions are a special case of an area plot in which the
+corners of the analysis area are collapsed to a single point.  In this case,
+all four latitudes are the same and all four longitudes are the same.
+
+It should be noted that the analysis area is independant of and defined
+seperately to the @code{Path.L_rx.lat} and @code{Path.L_rx.lng}
+parameters.  @code{Path.L_rx.lat} and @code{Path.L_rx.lng} are used by
+ITURHFProp to determine antenna alignment.
+
+The granularity of the analysis is controlled by the values of
+@code{latinc} and @code{lnginc} which define the spacing of
+sample points within the analysis area. The following example shows how global
+coverage may be defined, with sample points at every 15@textdegree{} latitude
+and longitude, yielding a total of 325 prediction points.  @code{latinc}
+and @code{lnginc} are left undefined when performing a Point-to-Point analysis.
+
+@example
+LL.lat -90.0
+LL.lng -180.0
+LR.lat -90.0
+LR.lng 180.0
+UL.lat 90.0
+UL.lng -180.0
+UR.lat 90.0
+UR.lng 180.0
+latinc 15.00
+lnginc 15.00
+@end example
+
+@node Sample Input File: Point-to-Point
+@appendix Sample Input File: Point-to-Point
+This example considers a circuit between London and Rome for which the
+following assumptions have been made;
+
+@itemize @bullet
+@item
+Time: 16:00 UTC, November 2018.
+@item
+Power: A transmit power of 400W (-3.98 dB(kW)) has been assumed.
+@item
+An SNR of 15dB has been defined with a bandwidth of 3000Hz, typical for
+a reasonable SSB channel.
+@item
+A user specified Type 14 antenna has been defined at the transmit
+site.  An isotropic receive antenna with a gain of 2.14dBi
+(corresponding to the maximum gain of a dipole) has been assumed at
+the receive end.
+@item
+SSN: The SIDC website predicts an SSN value of 8 for this time
+period.  This example demonstrates how the analysis area is collapsed to
+a single point for Point-to-Point Predictions.
+@end itemize
+
+@smallexample
+PathName "Sample Point-to-Point Analysis"
+Path.L_tx.lat 51.540700
+Path.L_tx.lng -0.130500
+TXAntFilePath "data_file_path/antenna/voaant/d20m.n14"
+TXGOS 2.16
+Path.L_rx.lat 41.804100
+Path.L_rx.lng 12.553700
+RXAntFilePath "ISOTROPIC"
+RXGOS 2.16
+Path.year 2018
+Path.month  11
+Path.hour 16
+Path.SSN 8
+Path.frequency 14.1
+Path.txpower -3.98
+Path.BW 3000.0
+Path.SNRr 15.0
+Path.SNRXXp 90
+Path.ManMadeNoise "CITY"
+Path.Modulation "ANALOG"
+Path.SorL "SHORTPATH"
+RptFileFormat "RPT_OPMUF | RPT_BCR | RPT_PR"
+LL.lat 41.804100
+LL.lng 12.553700
+LR.lat 41.804100
+LR.lng 12.553700
+UL.lat 41.804100
+UL.lng 12.553700
+UR.lat 41.804100
+UR.lng 12.553700
+DataFilePath "/path/to/data/"
+@end smallexample
+
+@node Sample Input File: Area
+@appendix Sample Input File: Area
+
+[TODO Include a sample input file]
+
+@node Antenna Files
+@appendix Antenna Files
+ITURHFProp supports either Isotropic radiators or antennas with characteristics
+defined in
+
+@section Isotropic Radiators
+The gain of isotropic radiators may be controlled by the value of
+@code{TXGOS} or @code{RXGOS}.
+
+@node Type 13 Antennas
+@section Type 13 Antennas
+Type 13 antenna files are typically used to model fixed directional antennas,
+tabulating radiation pattern in all azimuth directions (0-359) and all
+elevation angles (0-90), in 1@textdegree{}
+increments.
+
+ITURHFProp supports Type 13 files containing data for a single
+frequency.  Analysis of multiple frequencies requies multiple runs with a
+different Type 13 file called each time.
+
+The following extract shows the file
+header followed by the first two complete blocks (corresponding to
+azimuths of 0@textdegree{} and 1@textdegree{}).
+
+@smallexample
+Fan Dipole 9m above ground (12.00MHz)
+ 4     4 parameters
+ 5.940  [ 1] Max Gain dBi..:
+  13    [ 2] Antenna Type..: 360 x 91 gain values follow
+  -0.9  [ 3] Efficiency (for IONCAP)
+12.000  [ 4] Frequency
+    0    -99.990-70.637-41.283-11.930 -9.973 -8.017 -6.060 -4.957 -3.853 -2.750
+          -1.997 -1.243 -0.490  0.060  0.610  1.160  1.577  1.993  2.410  2.737
+           3.063  3.390  3.640  3.890  4.140  4.337  4.533  4.730  4.877  5.023
+           5.170  5.280  5.390  5.500  5.577  5.653  5.730  5.777  5.823  5.870
+           5.893  5.917  5.940  5.940  5.940  5.940  5.927  5.913  5.900  5.870
+           5.840  5.810  5.767  5.723  5.680  5.630  5.580  5.530  5.473  5.417
+           5.360  5.297  5.233  5.170  5.110  5.050  4.990  4.927  4.863  4.800
+           4.743  4.687  4.630  4.573  4.517  4.460  4.413  4.367  4.320  4.283
+           4.247  4.210  4.183  4.157  4.130  4.110  4.090  4.070  4.067  4.063
+           4.060
+    1    -99.990-70.638-41.286-11.934 -9.978 -8.022 -6.066 -4.962 -3.858 -2.754
+          -2.001 -1.249 -0.496  0.054  0.604  1.154  1.571  1.987  2.404  2.731
+           3.057  3.384  3.635  3.885  4.136  4.332  4.528  4.724  4.871  5.019
+           5.166  5.275  5.385  5.494  5.571  5.647  5.724  5.771  5.817  5.864
+           5.887  5.911  5.934  5.935  5.935  5.936  5.923  5.909  5.896  5.866
+           5.836  5.806  5.763  5.721  5.678  5.628  5.578  5.528  5.471  5.415
+           5.358  5.295  5.231  5.168  5.108  5.048  4.988  4.925  4.861  4.798
+           4.741  4.685  4.628  4.572  4.516  4.460  4.413  4.367  4.320  4.283
+           4.247  4.210  4.183  4.155  4.128  4.109  4.089  4.070  4.067  4.063
+           4.060
+    3    -99.990-70.641-41.291-11.942 -9.987 -8.033 -6.078 -4.973 -3.867 -2.762
+          -2.011 -1.259 -0.508  0.042  0.592  1.142  1.559  1.975  2.392  2.719
+           3.045  3.372  3.624  3.876  4.128  4.323  4.517  4.712  4.861  5.009
+           ... ... ...
+@end smallexample
+
+Each Type 13 antenna file requires an ASCII file about 265kB long to include
+all elements of the pattern in the proper format.
+
+@node Type 14 Antennas
+@section Type 14 Antennas
+Type 14 files are typically used to characterise omni-directional or
+rotatable antenna types.  The files comprise tables of antenna gain at
+each elevation (0@textdegree{}-90@textdegree{}) for multiple frquency blocks.
+
+The following extract shows the file header followed by the first two
+complete blocks, corresponding to gains at elevations of
+0@textdegree{} to 90@textdegree{} at frequencies of 1MHz (no data),
+2MHz;
+
+@smallexample
+3EL Yagi @@40M
+ 3     3 parameters
+  0.00  [ 1] Max Gain dBi..:
+  14    [ 2] Antenna Type..: 30 x (efficiency + 91 gain values) follow
+  14.0  [ 3] Frequency
+ 1  0.00   0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+           0.000
+ 2  0.00 -30.000-16.883-10.911 -7.442 -5.002 -3.128 -1.614 -0.350  0.729  1.667
+           2.491  3.223  3.877  4.466  4.998  5.480  5.919  6.319  6.683  7.016
+           7.319  7.596  7.848  8.078  8.286  8.474  8.644  8.797  8.932  9.052
+           9.158  9.249  9.326  9.391  9.444  9.485  9.515  9.533  9.542  9.540
+           9.529  9.509  9.480  9.442  9.396  9.342  9.280  9.210  9.134  9.050
+           8.960  8.863  8.760  8.650  8.535  8.414  8.288  8.156  8.019  7.877
+           7.730  7.579  7.423  7.263  7.098  6.930  6.757  6.581  6.401  6.217
+           6.030  5.840  5.646  5.449  5.249  5.046  4.840  4.631  4.419  4.205
+           3.988  3.768  3.545  3.320  3.092  2.861  2.628  2.391  2.153  1.911
+           1.666
+ 3  0.00 -30.000-14.570 -8.612 -5.162 -2.744 -0.895  0.590  1.822  2.866  3.765
+           4.547  5.233  5.839  6.375  6.852  7.275  7.652  7.986  8.281  8.541
+           ... ... ...
+@end smallexample
+
+Each Type 14 antenna file requires an ASCII file about 23kB long to include
+all elements of the pattern in the correct format.
+
+@node Index
+@unnumbered Index
+@printindex cp
+
+@bye
