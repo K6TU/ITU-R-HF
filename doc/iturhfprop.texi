@@ -73,7 +73,7 @@ to a repository of coefficient data containing the following files;
 COEFF01W.txt   COEFF08W.txt   ionos03.bin   ionos10.bin
 COEFF02W.txt   COEFF09W.txt   ionos04.bin   ionos11.bin
 COEFF03W.txt   COEFF10W.txt   ionos05.bin   ionos12.bin
-COEFF04W.txt   COEFF11W.txt   ionos06.bin  'P1239-3 Decile Factors.txt'
+COEFF04W.txt   COEFF11W.txt   ionos06.bin   P1239-3 Decile Factors.txt
 COEFF05W.txt   COEFF12W.txt   ionos07.bin
 COEFF06W.txt   ionos01.bin    ionos08.bin
 COEFF07W.txt   ionos02.bin    ionos09.bin
@@ -100,18 +100,24 @@ $ sudo make install-data @r{(Installs the data files)}
 The above will build the application and install it along with a man page under
 @file{/usr/local/}.  The data repository will be installed under
 @file{/usr/local/share/p533}.  With this configuration, ITURHFProp input files
-should have the @code{DataFilePath}  set as follows
+should set @code{DataFilePath} as follows;
 (@xref{ITURHFProp Input File Structure}).
 
 @example
 DataFilePath "/usr/local/share/p533/data/"
 @end example
 
+@node Windows
+@section Windows
+@cindex Windows
+
+[TODO Include Windows instructions here]
+
 @node Invoking ITURHFProp
 @chapter Invoking ITURHFProp
 @cindex Invoking @command{ITURHFProp}
 
-ITURHFProp is run from the command line using a command with the following
+ITURHFProp is run from a terminal using a command with the following
 structure;
 
 @example
@@ -124,9 +130,9 @@ The simplest invocation just defines an input file as follows;
 ITURHFProp myInputFile
 @end example
 
-This will call the application, saving the results in a file name created
-using a timestamp, e.g. @file{.RPTddmmyy-hhnnss.txt} where the report file
-is time stamped:
+This will call the application, process the circuit defined in
+@file{myInputFile.txt} and save the results to a file name using a timestamp,
+e.g. @file{.RPTddmmyy-hhnnss.txt}:
 
 @example
 dd = day
@@ -152,6 +158,10 @@ ITURHFProp myInputFile myOutputFile
 ITURHFProp does not impose any file naming conventions and allowing the user to
 adopt any naming scheme to suit their particular work flow, e.g. @file{.txt},
 @file{.in}, @file{.out} etc.
+
+@node Command Line Options
+@section Command Line Options
+@cindex command line options
 
 ITURHFProp supports a number of command line arguments that may be used to
 define the format of the output file.
@@ -398,8 +408,8 @@ data types may be defined.  If multiple data types are required, they must be
 separated with a`|' character as shown in the examples below.
 @xref{Report Options} for a list of valid report format values.
 
-The order that the desired parameters appear in the output file is fixed and
-does depend on the order in which the report options are specified.
+The order in which the desired parameters appear in the output file is fixed and
+does not reflect the order in which the report options are specified.
 
 @example
 RptFileFormat "RPT_BCR"
