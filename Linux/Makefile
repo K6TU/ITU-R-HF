@@ -1,7 +1,5 @@
-ifeq ($(prefix),)
-    prefix := /usr/local
-endif
 
+prefix ?= /usr/local
 export prefix
 
 mandir = $(prefix)/share/man
@@ -13,7 +11,8 @@ SUBDIRS := ../P533/Linux/ \
 	../P372/Linux/ \
 	../ITURHFProp/Linux
 
-data_dir = $(prefix)/share/p533/data
+datarootdir = $(prefix)/share
+datadir = $(datarootdir)
 
 $(TOPTARGETS): $(SUBDIRS)
 $(SUBDIRS):
@@ -22,9 +21,11 @@ $(SUBDIRS):
 .PHONY: $(TOPTARGETS) $(SUBDIRS)
 
 install: $(SUBDIRS)
-	install ITURHFProp.1 $(man1dir)
+	install -d $(DESTDIR)$(man1dir)
+	install ITURHFProp.1 $(DESTDIR)$(man1dir)
+	install -d $(DESTDIR)$(datadir)/iturhfprop/data
+	install -m 744 -D ../P372/Data/*.txt $(DESTDIR)$(datadir)/iturhfprop/data
+	install -m 744 -D ../P372/Data/*.bin $(DESTDIR)$(datadir)/iturhfprop/data
+
 	
-install-data:
-	install -d $(data_dir)
-	install -m 744 -D ../P372/Data/*.txt $(data_dir)
-	install -m 744 -D ../P372/Data/*.bin $(data_dir)
+
