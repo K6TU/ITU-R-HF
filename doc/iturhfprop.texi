@@ -83,6 +83,33 @@ COEFF07W.txt   ionos02.bin    ionos09.bin
 @section Linux
 @cindex Linux
 
+ITURHFProp may be installed on Linux platforms using either a snap or compiling
+from source.
+
+@node Snap Package
+@subsection Snap Package Installation
+@cindex Snap Package
+
+ITURHFProp is available as a Snap package for installation on supported Linux
+distributions.  The package may be installed with the following command;
+
+@example
+sudo snap install --dangerous iturhfprop_0.1_amd64.snap
+@end example
+
+Note the use of the ''@code{--dangerous}'' argument required for unsigned packages.
+
+@cartouche
+@strong{Note:} The snap package contains the data files required by ITURHFProp
+during processing.
+@example
+DataFilePath "/snap/iturhfprop/current/usr/share/iturhfprop/data/"
+@end example
+@end cartouche
+
+@node Compiling From Source
+@subsection Compiling From Source
+@cindex compiling
 
 A Linux specific Makefile is provided to simplify Installation on Linux
 platforms.  The following steps are required to install the application using
@@ -735,12 +762,12 @@ The gain of isotropic radiators may be controlled by the value of
 @node Type 11 Antennas
 @section Type 11 Antennas
 @cindex type 11 antennas
-Type 11 antenna files are the simplest of all user defined antenna types, used 
+Type 11 antenna files are the simplest of all user defined antenna types, used
 to model frequency insensitive omni-directional antennas,
 tabulating radiation pattern at elevation angles (0-90), in 1@textdegree{}
 increments.
 
-The following extract shows a complete Type 11 file, used by REC533 to model 
+The following extract shows a complete Type 11 file, used by REC533 to model
 receive whip antennas.
 
 @smallexample
