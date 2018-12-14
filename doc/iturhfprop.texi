@@ -100,11 +100,18 @@ sudo snap install --dangerous iturhfprop_0.1_amd64.snap
 Note the use of the ''@code{--dangerous}'' argument required for unsigned packages.
 
 @cartouche
-@strong{Note:} The snap package contains the data files required by ITURHFProp
-during processing.
-@example
+The snap package contains the data files required by ITURHFProp
+during processing.  The @code{DataFilePath} parameter in the input file
+should be set to the system snap folder;
+
+@strong{Ubuntu}
+@smallexample
 DataFilePath "/snap/iturhfprop/current/usr/share/iturhfprop/data/"
-@end example
+@end smallexample
+@strong{Fedora}
+@smallexample
+DataFilePath "/var/lib/snapd/snap/iturhfprop/current/usr/share/iturhfprop/data/"
+@end smallexample
 @end cartouche
 
 @node Compiling From Source
@@ -126,7 +133,7 @@ $ sudo make install-data @r{(Installs the data files)}
 
 The above will build the application and install it along with a man page under
 @file{/usr/local/}.  The data repository will be installed under
-@file{/usr/local/share/p533}.  With this configuration, ITURHFProp input files
+@file{/usr/local/share/iturhfprop}.  With this configuration, ITURHFProp input files
 should set @code{DataFilePath} as follows;
 (@xref{ITURHFProp Input File Structure}).
 
@@ -169,12 +176,6 @@ hh = hour
 nn = minute
 ss = seconds
 @end example
-
-@cartouche
-@strong{Note:} The `.' prefix causes auto generated report file names to be
-recognised as a hidden-file on Linux systems.  It is recommended that the
-output filename is always defined by the user.
-@end cartouche
 
 The output file may be provided as a second argument as follows;
 
@@ -651,6 +652,7 @@ Frequency dispersion for simple BCR (Hz), between 0.0 and 1000.0
 
 @node Defining the Analysis Area
 @section Defining the Analysis Area
+@cindex Area, Analysis
 ITURHFProp supports analysis of both Point-to-Point and Area coverage circuits.
 In both cases, the analysis area is specified as a rectange
 encompassing the geographic region of interest. The convention for coordinates
@@ -684,6 +686,13 @@ UR.lng 180.0
 latinc 15.00
 lnginc 15.00
 @end example
+
+@node Antenna Parameters
+@section Antenna Parameters
+@cindex Parameters, Antenna
+
+The Antenna Orientation may be defined using the AntennaOrientation, TXBearing
+and RXBearing parameters.
 
 @node Sample Input File: Point-to-Point
 @appendix Sample Input File: Point-to-Point
@@ -746,12 +755,45 @@ DataFilePath "/path/to/data/"
 @node Sample Input File: Area
 @appendix Sample Input File: Area
 
-[TODO Include a sample input file]
+@smallexample
+PathName "Proppy Online HF Circuit Prediction: Area"
+Path.L_tx.lat 52.696400
+Path.L_tx.lng -1.171900
+TXAntFilePath "ISOTROPIC"
+TXGOS 2.16
+RXAntFilePath "ISOTROPIC"
+RXGOS 2.16
+Path.year 2018
+Path.month  11
+Path.hour 19
+Path.SSN 8
+Path.frequency 10.00
+Path.txpower -10.00
+Path.BW 500.0
+Path.SNRr 0.0
+Path.SNRXXp 90
+Path.ManMadeNoise "CITY"
+Path.Modulation "ANALOG"
+Path.SorL "SHORTPATH"
+RptFileFormat "RPT_RXLOCATION | RPT_BCR | RPT_PR | RPT_SNR"
+LL.lat -90.0
+LL.lng -180.0
+LR.lat -90.0
+LR.lng 180.0
+UL.lat 90.0
+UL.lng -180.0
+UR.lat 90.0
+UR.lng 180.0
+latinc 15.00
+lnginc 15.00
+DataFilePath "/path/to/data/"
+@end smallexample
+
 
 @node Antenna Files
 @appendix Antenna Files
 ITURHFProp supports either Isotropic radiators or antennas with characteristics
-defined in
+defined in a VOACAP format text file.
 
 @node Isotropic Radiators
 @section Isotropic Radiators
