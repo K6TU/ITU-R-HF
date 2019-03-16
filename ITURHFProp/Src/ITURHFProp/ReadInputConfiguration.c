@@ -408,6 +408,9 @@ unsigned long OutputOption(char optstr[256]) {
 	if(strncmp("RPT_BMUFD", optstr, 9) == 0) {
 		return RPT_BMUFD;
 	};
+	if(strncmp("RPT_FPROB", optstr, 9) == 0) {
+		return RPT_FPROB;
+	};
 	// RPT_D*
 	if(strncmp("RPT_DUMPPATH", optstr, 12) == 0) {
 		return RPT_DUMPPATH;

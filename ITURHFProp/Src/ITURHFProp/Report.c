@@ -38,6 +38,7 @@ void function_RPT_DMAX(struct PathData path, struct ITURHFProp ITURHFP, int opti
 void function_RPT_ELE(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
 void function_RPT_BMUF(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
 void function_RPT_BMUFD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
+void function_RPT_FPROB(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
 void function_RPT_OPMUF(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
 void function_RPT_OPMUFD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
 void function_RPT_N0_F2(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
@@ -205,8 +206,11 @@ void PrintRecord(struct PathData path, struct ITURHFProp ITURHFP, int option) {
 		function_RPT_BMUF(path, ITURHFP, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_BMUFD) == RPT_BMUFD) {
-		col;
+		//col;
 		function_RPT_BMUFD(path, ITURHFP, option, &col);
+	};
+	if((ITURHFP.RptFileFormat & RPT_FPROB) == RPT_FPROB) {
+		function_RPT_FPROB(path, ITURHFP, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_OPMUF) == RPT_OPMUF) {
 		function_RPT_OPMUF(path, ITURHFP, option, &col);
@@ -544,6 +548,29 @@ void function_RPT_BMUFD(struct PathData path, struct ITURHFProp ITURHFP, int opt
 			break;
 	};
 
+	return;
+};
+
+void function_RPT_FPROB(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+	switch(option) {
+		case PRINT_HEADER:
+			fprintf(fp, "Column %02d: FProb - Probability of Propagation\n", ++*col);
+			break;
+		case PRINT_RFC4180_HEADER:
+			fprintf(fp, ",FProb");
+			++*col;
+			break;
+		case PRINT_DATA:
+			fprintf(fp,",");
+			//fprintf(fp, DBLFIELD, path.BMUF);
+			fprintf(fp, DBLFIELD, .5);
+			break;
+		case PRINT_RFC4180_DATA:
+			fprintf(fp,",");
+			//fprintf(fp, RFC4180_DBLFIELD, path.BMUF);
+			fprintf(fp, RFC4180_DBLFIELD, .55);
+			break;
+	};
 	return;
 };
 

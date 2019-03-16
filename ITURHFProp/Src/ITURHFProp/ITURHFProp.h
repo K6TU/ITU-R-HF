@@ -108,6 +108,8 @@
 #define RPT_GRW				268435456   // 28
 #define RPT_ESL				536870912   // 29	Field Strength (dB(1uV/m)) Es and El
 #define RPT_LONG			1073741824	// 30	Long path parameters Gap, E0, fM, fL, Ly and K[2]
+#define RPT_FPROB			2147483648	// 31	Probability of ionospheric support
+
 
 // Choose all CSV output
 #define RPT_ALL				4294967294	// 2**(32) - 2
