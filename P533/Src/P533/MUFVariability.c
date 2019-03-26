@@ -164,11 +164,13 @@ void MUFVariability(struct PathData *path) {
 	if (EMUF90 > F2MUF90) {
 		path->MUF90 = EMUF90;
 		path->MUF10 = EMUF10;
+		path->FProb = EProb;
 	} else {
 		path->MUF90 = F2MUF90;
 		path->MUF10 = F2MUF10;
+		path->FProb = F2Prob;
 	}
-	
+
 	printf("MUF90: %.2f MUF10: %.2f EProb: %.2f F2Prob: %.2f\n", path->MUF90, path->MUF10, EProb, F2Prob);
 
 	return;
