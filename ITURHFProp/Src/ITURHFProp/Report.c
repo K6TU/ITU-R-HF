@@ -562,13 +562,11 @@ void function_RPT_FPROB(struct PathData path, struct ITURHFProp ITURHFP, int opt
 			break;
 		case PRINT_DATA:
 			fprintf(fp,",");
-			//fprintf(fp, DBLFIELD, path.BMUF);
-			fprintf(fp, DBLFIELD, .5);
+			fprintf(fp, DBLFIELD, path.FProb);
 			break;
 		case PRINT_RFC4180_DATA:
 			fprintf(fp,",");
-			//fprintf(fp, RFC4180_DBLFIELD, path.BMUF);
-			fprintf(fp, RFC4180_DBLFIELD, .55);
+			fprintf(fp, RFC4180_DBLFIELD, path.FProb);
 			break;
 	};
 	return;

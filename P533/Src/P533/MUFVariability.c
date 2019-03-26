@@ -171,7 +171,7 @@ void MUFVariability(struct PathData *path) {
 		path->FProb = F2Prob;
 	}
 
-	printf("MUF90: %.2f MUF10: %.2f EProb: %.2f F2Prob: %.2f\n", path->MUF90, path->MUF10, EProb, F2Prob);
+	printf("MUF90: %.2f MUF10: %.2f EProb: %.2f F2Prob: %.2f FProb: %.2f\n", path->MUF90, path->MUF10, EProb, F2Prob, path->FProb);
 
 	return;
 
