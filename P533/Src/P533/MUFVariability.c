@@ -64,7 +64,7 @@ void MUFVariability(struct PathData *path) {
 	// There potentially are 3 E layer modes and 6 F2 layer modes
 
 	// The F2 layer modes
-	printf("\n");
+	//printf("\n");
 	for(i=0; i<MAXF2MDS; i++) { // There are 6 F2 layer modes
 		if(path->Md_F2[i].BMUF != 0.0) { // If the Basic MUF is set, non-zero, the layer exists
 
@@ -94,7 +94,11 @@ void MUFVariability(struct PathData *path) {
 				path->Md_F2[i].Fprob = max(((80.0/(1.0 + (path->frequency/(path->Md_F2[i].MUF50*path->Md_F2[i].deltau)))) - 30.0), 0.0);
 				bbProb = max((80.0 / (1.0 + (((path->frequency/path->Md_F2[i].MUF50)-1.0) / (path->Md_F2[i].deltau - 1.0)))) - 30.0, 0.0);
 			}
-			printf("(%d) Freq: %.1fMHz deltau: %.2f deltal %.2f MUF50: %.2f MUF90: %.2f MUF10: %.2f P533 Prob: %.2f BBProb: %.2f\n", i, path->frequency, path->Md_F2[i].deltau, path->Md_F2[i].deltal, path->Md_F2[i].MUF50, path->Md_F2[i].MUF90, path->Md_F2[i].MUF10, path->Md_F2[i].Fprob, bbProb);
+			//printf("(%d) Freq: %.1fMHz deltau: %.2f deltal %.2f MUF50: %.2f MUF90: %.2f MUF10: %.2f P533 Prob: %.2f BBProb: %.2f\n", i, path->frequency, path->Md_F2[i].deltau, path->Md_F2[i].deltal, path->Md_F2[i].MUF50, path->Md_F2[i].MUF90, path->Md_F2[i].MUF10, path->Md_F2[i].Fprob, bbProb);
+			if (path->Md_F2[i].MUF50 == path->MUF50) {
+				printf("assigning fprob %.2f\n", path->Md_F2[i].Fprob);
+				path->Fprob = path->Md_F2[i].Fprob;
+			}
 		}
 	}
 
@@ -121,10 +125,12 @@ void MUFVariability(struct PathData *path) {
 			if(path->frequency < path->Md_E[i].MUF50) {
 				path->Md_E[i].Fprob = min((130 - (80.0/(1.0 + (path->Md_E[i].MUF50/(path->frequency*path->Md_E[i].deltal))))), 100.0);
 				bbProb = min(130.0 - (80.0 / (1.0 + ((1.0-(path->frequency/path->Md_E[i].MUF50))/(1.0-path->Md_E[i].deltal)))), 100.0);
-			}
-			else { // (path->frequency >= path->Md_F2[i].MUF50)
+			} else { // (path->frequency >= path->Md_F2[i].MUF50)
 				path->Md_E[i].Fprob = max(((80.0/(1.0 + (path->frequency/(path->Md_E[i].MUF50*path->Md_E[i].deltau))))- 30.0), 0.0);
 				bbProb = max((80.0 / (1.0 + (((path->frequency/path->Md_E[i].MUF50)-1.0) / (path->Md_E[i].deltau - 1.0)))) - 30.0, 0.0);
+			}
+			if (path->Md_F2[i].MUF50 == path->MUF50) {
+				path->Fprob = path->Md_E[i].Fprob;
 			}
 		}
 	}
@@ -159,8 +165,9 @@ void MUFVariability(struct PathData *path) {
 	};
 
 	// Determine the 90% and 10% MUF amongst all existant modes
-	//path->MUF90 = max(EMUF90, F2MUF90); // largest 90% MUF
-	//path->MUF10 = max(EMUF10, F2MUF10); // largest 10% MUF
+	path->MUF90 = max(EMUF90, F2MUF90); // largest 90% MUF
+	path->MUF10 = max(EMUF10, F2MUF10); // largest 10% MUF
+	/*
 	if (EMUF90 > F2MUF90) {
 		path->MUF90 = EMUF90;
 		path->MUF10 = EMUF10;
@@ -169,9 +176,9 @@ void MUFVariability(struct PathData *path) {
 		path->MUF90 = F2MUF90;
 		path->MUF10 = F2MUF10;
 		path->FProb = F2Prob;
-	}
+	}*/
 
-	printf("MUF90: %.2f MUF10: %.2f EProb: %.2f F2Prob: %.2f FProb: %.2f\n", path->MUF90, path->MUF10, EProb, F2Prob, path->FProb);
+	//printf("MUF90: %.2f MUF10: %.2f EProb: %.2f F2Prob: %.2f FProb: %.2f\n", path->MUF90, path->MUF10, EProb, F2Prob, path->FProb);
 
 	return;
 

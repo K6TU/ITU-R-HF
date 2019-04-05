@@ -406,7 +406,7 @@ struct PathData {
 	double MUF50;	// MUF exceeded for 50% of the days of the month (MHz)
 	double MUF90;	// MUF exceeded for 90% of the days of the month (MHz)
 	double MUF10;	// MUF exceeded for 10% of the days of the month (MHz)
-	double FProb; // Probability of ionospheric support (0-100%)
+	double Fprob; // Probability of ionospheric support (0-100%)
 	double OPMUF;	// Operation MUF (MHz)
 	double OPMUF90; // OPMUF exceeded for 90% of the days of the month (MHz)
 	double OPMUF10; // OPMUF exceeded for 10% of the days of the month (MHz)
