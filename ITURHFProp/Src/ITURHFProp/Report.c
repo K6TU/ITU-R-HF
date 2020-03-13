@@ -14,6 +14,7 @@
 #define DBLFIELD		"% 7.2lf"
 #define DBLFIELD1		"% 9.4lf"
 #define DBLFIELD2		"% 9.2lf"
+#define DBLFIELD3		"% 9.3lf"
 #define STRFIELD		"%5s"
 
 #define RFC4180_DBLFIELD		"%.2lf"
@@ -33,38 +34,37 @@ void PrintRecord(struct PathData path, struct ITURHFProp ITURHFP, int printhr);
 void PrintLastRecord(struct PathData path, struct ITURHFProp ITURHFP);
 char EW(double lng);
 char NS(double lat);
-void function_RPT_D(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_DMAX(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_ELE(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_BMUF(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_BMUFD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_FPROB(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_OPMUF(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_OPMUFD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_N0_F2(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_N0_E(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_E(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_PR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_GRW(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_NOISESOURCES(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_NOISESOURCESD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_NOISETOTALD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_NOISETOTAL(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_SNR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_SNRD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_SNRXX(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_SIR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_SIRD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_RSN(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_BCR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_OCR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_OCRS(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_MIR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_ANTENNA(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_DOMMODE(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_RXLOCATION(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_ESL(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
-void function_RPT_LONG(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col);
+void function_RPT_D(   struct PathData path, int option, int *col);
+void function_RPT_DMAX(struct PathData path, int option, int *col);
+void function_RPT_ELE( struct PathData path, int option, int *col);
+void function_RPT_BMUF(struct PathData path, int option, int *col);
+void function_RPT_BMUFD(struct PathData path, int option, int *col);
+void function_RPT_OPMUF(struct PathData path, int option, int *col);
+void function_RPT_OPMUFD(struct PathData path, int option, int *col);
+void function_RPT_N0_F2(struct PathData path, int option, int *col);
+void function_RPT_N0_E(struct PathData path, int option, int *col);
+void function_RPT_E(struct PathData path, int option, int *col);
+void function_RPT_PR(struct PathData path, int option, int *col);
+void function_RPT_GRW(struct PathData path, int option, int *col);
+void function_RPT_NOISESOURCES(struct PathData path, int option, int *col);
+void function_RPT_NOISESOURCESD(struct PathData path, int option, int *col);
+void function_RPT_NOISETOTALD(struct PathData path, int option, int *col);
+void function_RPT_NOISETOTAL(struct PathData path, int option, int *col);
+void function_RPT_SNR(struct PathData path, int option, int *col);
+void function_RPT_SNRD(struct PathData path, int option, int *col);
+void function_RPT_SNRXX(struct PathData path, int option, int *col);
+void function_RPT_SIRD(struct PathData path, int option, int *col);
+void function_RPT_SIR(struct PathData path, int option, int *col);
+void function_RPT_RSN(struct PathData path, int option, int *col);
+void function_RPT_BCR(struct PathData path, int option, int *col);
+void function_RPT_OCR(struct PathData path, int option, int *col);
+void function_RPT_OCRS(struct PathData path, int option, int *col);
+void function_RPT_MIR(struct PathData path, int option, int *col);
+void function_RPT_ANTENNA(struct PathData path, int option, int *col);
+void function_RPT_DOMMODE(struct PathData path, int option, int *col);
+void function_RPT_RXLOCATION(struct PathData path, int option, int *col);
+void function_RPT_ESL(struct PathData path, int option, int *col);
+void function_RPT_LONG(struct PathData path, int option, int *col);
 // End local prototypes
 
 // Local globals
@@ -180,7 +180,7 @@ void PrintRecord(struct PathData path, struct ITURHFProp ITURHFP, int option) {
 			fprintf(fp, " %02d", path.hour+1);
 			fprintf(fp,",");
 			// Frequency
-			fprintf(fp, DBLFIELD, path.frequency);
+			fprintf(fp, DBLFIELD3, path.frequency);
 			break;
 		case PRINT_RFC4180_DATA:
 			// Each record will require the month, hour, and frequency
@@ -191,99 +191,97 @@ void PrintRecord(struct PathData path, struct ITURHFProp ITURHFP, int option) {
 	};
 
 	if((ITURHFP.RptFileFormat & RPT_RXLOCATION) == RPT_RXLOCATION) {
-		function_RPT_RXLOCATION(path, ITURHFP, option, &col);
+		function_RPT_RXLOCATION(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_D) == RPT_D) {
-		function_RPT_D(path, ITURHFP, option, &col);
+		function_RPT_D(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_DMAX) == RPT_DMAX) {
-		function_RPT_DMAX(path, ITURHFP, option, &col);
+		function_RPT_DMAX(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_ELE) == RPT_ELE) {
-		function_RPT_ELE(path, ITURHFP, option, &col);
+		function_RPT_ELE(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_BMUF) == RPT_BMUF) {
-		function_RPT_BMUF(path, ITURHFP, option, &col);
+		function_RPT_BMUF(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_BMUFD) == RPT_BMUFD) {
-		//col;
-		function_RPT_BMUFD(path, ITURHFP, option, &col);
+		function_RPT_BMUFD(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_FPROB) == RPT_FPROB) {
 		function_RPT_FPROB(path, ITURHFP, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_OPMUF) == RPT_OPMUF) {
-		function_RPT_OPMUF(path, ITURHFP, option, &col);
+		function_RPT_OPMUF(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_OPMUFD) == RPT_OPMUFD) {
-		col;
-		function_RPT_OPMUFD(path, ITURHFP, option, &col);
+		function_RPT_OPMUFD(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_N0_F2) == RPT_N0_F2) {
-		function_RPT_N0_F2(path, ITURHFP, option, &col);
+		function_RPT_N0_F2(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_N0_E) == RPT_N0_E) {
-		function_RPT_N0_E(path, ITURHFP, option, &col);
+		function_RPT_N0_E(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_E) == RPT_E) {
-		function_RPT_E(path, ITURHFP, option, &col);
+		function_RPT_E(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_PR) == RPT_PR) {
-		function_RPT_PR(path, ITURHFP, option, &col);
+		function_RPT_PR(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_GRW) == RPT_GRW) {
-		function_RPT_GRW(path, ITURHFP, option, &col);
+		function_RPT_GRW(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_NOISESOURCES) == RPT_NOISESOURCES) {
-		function_RPT_NOISESOURCES(path, ITURHFP, option, &col);
+		function_RPT_NOISESOURCES(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_NOISESOURCESD) == RPT_NOISESOURCESD) {
-		function_RPT_NOISESOURCESD(path, ITURHFP, option, &col);
+		function_RPT_NOISESOURCESD(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_NOISETOTALD) == RPT_NOISETOTALD) {
-		function_RPT_NOISETOTALD(path, ITURHFP, option, &col);
+		function_RPT_NOISETOTALD(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_NOISETOTAL) == RPT_NOISETOTAL) {
-		function_RPT_NOISETOTAL(path, ITURHFP, option, &col);
+		function_RPT_NOISETOTAL(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_SNR) == RPT_SNR) {
-		function_RPT_SNR(path, ITURHFP, option, &col);
+		function_RPT_SNR(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_SNRD) == RPT_SNRD) {
-		function_RPT_SNRD(path, ITURHFP, option, &col);
+		function_RPT_SNRD(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_SNRXX) == RPT_SNRXX) {
-		function_RPT_SNRXX(path, ITURHFP, option, &col);
+		function_RPT_SNRXX(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_SIR) == RPT_SIR) {
-		function_RPT_SIR(path, ITURHFP, option, &col);
+		function_RPT_SIR(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_SIRD) == RPT_SIRD) {
-		function_RPT_SIRD(path, ITURHFP, option, &col);
+		function_RPT_SIRD(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_RSN) == RPT_RSN) {
-		function_RPT_RSN(path, ITURHFP, option, &col);
+		function_RPT_RSN(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_BCR) == RPT_BCR) {
-		function_RPT_BCR(path, ITURHFP, option, &col);
+		function_RPT_BCR(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_OCR) == RPT_OCR) {
-		function_RPT_OCR(path, ITURHFP, option, &col);
+		function_RPT_OCR(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_OCRS) ==RPT_OCRS ) {
-		function_RPT_OCRS(path, ITURHFP, option, &col);
+		function_RPT_OCRS(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_MIR) == RPT_MIR) {
-		function_RPT_MIR(path, ITURHFP, option, &col);
+		function_RPT_MIR(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_DOMMODE) == RPT_DOMMODE) {
-		function_RPT_DOMMODE(path, ITURHFP, option, &col);
+		function_RPT_DOMMODE(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_ESL) == RPT_ESL) {
-		function_RPT_ESL(path, ITURHFP, option, &col);
+		function_RPT_ESL(path, option, &col);
 	};
 	if((ITURHFP.RptFileFormat & RPT_LONG) == RPT_LONG) {
-		function_RPT_LONG(path, ITURHFP, option, &col);
+		function_RPT_LONG(path, option, &col);
 	};
 
 	// If the data format header is being printed, put the tail on.
@@ -430,7 +428,7 @@ void PrintLastRecord(struct PathData path, struct ITURHFProp ITURHFP) {
 
 };
 
-void function_RPT_D(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_D(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: D - Path distance (km)\n", ++*col);
@@ -451,7 +449,7 @@ void function_RPT_D(struct PathData path, struct ITURHFProp ITURHFP, int option,
 	return;
 };
 
-void function_RPT_DMAX(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_DMAX(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: dmax - Path maximum hop distance (km)\n", ++*col);
@@ -477,7 +475,7 @@ void function_RPT_DMAX(struct PathData path, struct ITURHFProp ITURHFP, int opti
 	return;
 };
 
-void function_RPT_ELE(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_ELE(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: ele - Path minimum Rx elevation angle (deg)\n", ++*col);
@@ -498,7 +496,7 @@ void function_RPT_ELE(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_BMUF(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_BMUF(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: BMUF - Path basic MUF (MHz)\n", ++*col);
@@ -519,7 +517,7 @@ void function_RPT_BMUF(struct PathData path, struct ITURHFProp ITURHFP, int opti
 	return;
 };
 
-void function_RPT_BMUFD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_BMUFD(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: MUF50 - 50%% Path basic MUF (MHz)\n", ++*col);
@@ -595,7 +593,7 @@ void function_RPT_OPMUF(struct PathData path, struct ITURHFProp ITURHFP, int opt
 
 };
 
-void function_RPT_OPMUFD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_OPMUFD(struct PathData path, int option, int *col) {
 
 	switch(option) {
 		case PRINT_HEADER:
@@ -622,7 +620,7 @@ void function_RPT_OPMUFD(struct PathData path, struct ITURHFProp ITURHFP, int op
 	return;
 };
 
-void function_RPT_N0_F2(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_N0_F2(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: Lowest order mode for the F2 layer\n", ++*col);
@@ -655,7 +653,7 @@ void function_RPT_N0_F2(struct PathData path, struct ITURHFProp ITURHFP, int opt
 	return;
 };
 
-void function_RPT_N0_E(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_N0_E(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: Lowest order mode for the E layer\n", ++*col);
@@ -688,7 +686,7 @@ void function_RPT_N0_E(struct PathData path, struct ITURHFProp ITURHFP, int opti
 	return;
 };
 
-void function_RPT_E(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_E(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: E - Path Field Strength (dB(1uV/m))\n", ++*col);
@@ -709,7 +707,7 @@ void function_RPT_E(struct PathData path, struct ITURHFProp ITURHFP, int option,
 	return;
 };
 
-void function_RPT_GRW(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_GRW(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: Grw - Receive Antenna Gain (dbi)\n", ++*col);
@@ -730,7 +728,7 @@ void function_RPT_GRW(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_PR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_PR(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: Pr - Median receiver power (dB)\n", ++*col);
@@ -751,7 +749,7 @@ void function_RPT_PR(struct PathData path, struct ITURHFProp ITURHFP, int option
 	return;
 };
 
-void function_RPT_NOISESOURCES(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_NOISESOURCES(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: FaA - Atmospheric noise (dB)\n", ++*col);
@@ -782,7 +780,7 @@ void function_RPT_NOISESOURCES(struct PathData path, struct ITURHFProp ITURHFP, 
 	return;
 };
 
-void function_RPT_NOISESOURCESD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_NOISESOURCESD(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: DuA - Upper decile deviation of atmospheric noise (dB)\n", ++*col);
@@ -828,7 +826,7 @@ void function_RPT_NOISESOURCESD(struct PathData path, struct ITURHFProp ITURHFP,
 	return;
 };
 
-void function_RPT_NOISETOTALD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_NOISETOTALD(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: DuT - Upper decile deviation of total noise (dB)\n", ++*col);
@@ -854,7 +852,7 @@ void function_RPT_NOISETOTALD(struct PathData path, struct ITURHFProp ITURHFP, i
 	return;
 };
 
-void function_RPT_NOISETOTAL(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_NOISETOTAL(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: FamT - Total noise (dB)\n", ++*col);
@@ -875,7 +873,7 @@ void function_RPT_NOISETOTAL(struct PathData path, struct ITURHFProp ITURHFP, in
 	return;
 };
 
-void function_RPT_SNR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_SNR(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: SNR - Median signal-to-noise ratio (dB)\n", ++*col);
@@ -896,7 +894,7 @@ void function_RPT_SNR(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_SNRD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_SNRD(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: DuSN - Upper decile deviation of signal-to-noise ratio (dB)\n", ++*col);
@@ -922,7 +920,7 @@ void function_RPT_SNRD(struct PathData path, struct ITURHFProp ITURHFP, int opti
 	return;
 };
 
-void function_RPT_SNRXX(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_SNRXX(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: SNRXXp - Signal-to-noise ratio at %0d%% of month\n", ++*col, path.SNRXXp);
@@ -943,7 +941,7 @@ void function_RPT_SNRXX(struct PathData path, struct ITURHFProp ITURHFP, int opt
 	return;
 };
 
-void function_RPT_SIR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_SIR(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: SIR - Signal-to-interference ratio (dB)\n", ++*col);
@@ -964,7 +962,7 @@ void function_RPT_SIR(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_SIRD(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_SIRD(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: DuSI - Upper decile deviation of signal-to-interference ratio (dB)\n", ++*col);
@@ -990,7 +988,7 @@ void function_RPT_SIRD(struct PathData path, struct ITURHFProp ITURHFP, int opti
 	return;
 };
 
-void function_RPT_RSN(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_RSN(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: RSN - Probability that the required SNR is achieved (%%)\n", ++*col);
@@ -1021,7 +1019,7 @@ void function_RPT_RSN(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_BCR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_BCR(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: BCR - Basic circuit reliability (%%)\n", ++*col);
@@ -1042,7 +1040,7 @@ void function_RPT_BCR(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_OCR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_OCR(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: OCR - Overall circuit reliability not considering scattering (%%)\n", ++*col);
@@ -1063,7 +1061,7 @@ void function_RPT_OCR(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_OCRS(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_OCRS(struct PathData path, int option, int *col) {
 
 	switch(option) {
 		case PRINT_HEADER:
@@ -1090,7 +1088,7 @@ void function_RPT_OCRS(struct PathData path, struct ITURHFProp ITURHFP, int opti
 	return;
 };
 
-void function_RPT_MIR(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_MIR(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: MIR - Multimode Interference (%%)\n", ++*col);
@@ -1111,7 +1109,7 @@ void function_RPT_MIR(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_RXLOCATION(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_RXLOCATION(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: Receiver latitude (deg)\n", ++*col);
@@ -1137,7 +1135,7 @@ void function_RPT_RXLOCATION(struct PathData path, struct ITURHFProp ITURHFP, in
 	return;
 };
 
-void function_RPT_ESL(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_ESL(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: Short Path (<=7000 km) Field Strength (dB(1uV/m))\n", ++*col);
@@ -1163,7 +1161,7 @@ void function_RPT_ESL(struct PathData path, struct ITURHFProp ITURHFP, int optio
 	return;
 };
 
-void function_RPT_LONG(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_LONG(struct PathData path, int option, int *col) {
 	switch(option) {
 		case PRINT_HEADER:
 			fprintf(fp, "Column %02d: Free-space Field Strength 3 MW e.i.r.p. (dB(1uV/m)\n", ++*col);
@@ -1234,7 +1232,7 @@ void function_RPT_LONG(struct PathData path, struct ITURHFProp ITURHFP, int opti
 	return;
 };
 
-void function_RPT_DOMMODE(struct PathData path, struct ITURHFProp ITURHFP, int option, int *col) {
+void function_RPT_DOMMODE(struct PathData path, int option, int *col) {
 
 	switch(option) {
 		case PRINT_HEADER:
@@ -1387,7 +1385,7 @@ char NS(double lat) {
 };
 
 //////////////////////////////////////////////////////////////////////////////
-//      Copyright  International Telecommunication Union (ITU) 2018         //
+//      Copyright  International Telecommunication Union (ITU) 2019         //
 //                     All rights reserved.                                 //
 // No part of this publication may be reproduced, by any means whatsoever,  //
 //              without written permission of ITU                           //

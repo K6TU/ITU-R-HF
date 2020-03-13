@@ -1,7 +1,11 @@
 CC = gcc
 source_dir = ../Src/P533/
 bin_dir = ../Bin/
-CFLAGS = -fPIC -Wall -Wextra -O2 -g -I$(source_dir)
+# Use the following for testing
+#CFLAGS = -fPIC -Wall -Wextra -O0 -g -I$(source_dir)
+# Use the following for production
+CFLAGS = -fPIC -Wall -Wextra -O2 -I$(source_dir)
+
 LDFLAGS = -shared -lm -ldl 
 RM = rm -f
 TARGET_LIB = libp533.so
@@ -46,9 +50,8 @@ include $(SRCS:.c=.d)
 .PHONY: clean
 clean: 
 	${RM} ${OBJS} $(SRCS:.c=.d)
+	${RM} ${TARGET_LIB}
 
 install: all
 	install -d $(DESTDIR)$(libdir)/
-	install $(TARGET_LIB) $(DESTDIR)$(libdir)/$(TARGET_LIB)
-
-
+	install -m 755 $(TARGET_LIB) $(DESTDIR)$(libdir)/$(TARGET_LIB)

@@ -87,17 +87,12 @@ void MUFVariability(struct PathData *path) {
 
 			// Now determine the probability that the mode can be supported
 			if(path->frequency < path->Md_F2[i].MUF50) {
-				path->Md_F2[i].Fprob = min((130 - (80.0/(1.0 + (path->Md_F2[i].MUF50/(path->frequency*path->Md_F2[i].deltal))))), 100.0);
-				bbProb = min(130.0 - (80.0 / (1.0 + ((1.0-(path->frequency/path->Md_F2[i].MUF50))/(1.0-path->Md_F2[i].deltal)))), 100.0);
+				path->Md_F2[i].Fprob = min(1.3 - (0.8 / (1+((1.0 - (path->frequency / path->Md_F2[i].MUF50)) / (1.0-path->Md_F2[i].deltal)))), 1.0);
+				//printf("Eq.9  Freq=%.2f MUF50=%.2f deltal=%.2f Fprob=%.2f\n", path->frequency, path->Md_F2[i].MUF50, path->Md_F2[i].deltal, path->Md_F2[i].Fprob);
 			}
 			else { // (path->frequency >= path->Md_F2[i].MUF50)
-				path->Md_F2[i].Fprob = max(((80.0/(1.0 + (path->frequency/(path->Md_F2[i].MUF50*path->Md_F2[i].deltau)))) - 30.0), 0.0);
-				bbProb = max((80.0 / (1.0 + (((path->frequency/path->Md_F2[i].MUF50)-1.0) / (path->Md_F2[i].deltau - 1.0)))) - 30.0, 0.0);
-			}
-			//printf("(%d) Freq: %.1fMHz deltau: %.2f deltal %.2f MUF50: %.2f MUF90: %.2f MUF10: %.2f P533 Prob: %.2f BBProb: %.2f\n", i, path->frequency, path->Md_F2[i].deltau, path->Md_F2[i].deltal, path->Md_F2[i].MUF50, path->Md_F2[i].MUF90, path->Md_F2[i].MUF10, path->Md_F2[i].Fprob, bbProb);
-			if (path->Md_F2[i].MUF50 == path->MUF50) {
-				printf("assigning fprob %.2f\n", path->Md_F2[i].Fprob);
-				path->Fprob = path->Md_F2[i].Fprob;
+				path->Md_F2[i].Fprob = max((0.8/(1 + ( ((path->frequency/path->Md_F2[i].MUF50)-1.0) / (path->Md_F2[i].deltau-1.0) ))) - 0.3, 0.0);
+				//printf("Eq.10 Freq=%.2f MUF50=%.2f deltau=%.2f Fprob=%.2f\n", path->frequency, path->Md_F2[i].MUF50, path->Md_F2[i].deltau, path->Md_F2[i].Fprob);
 			}
 		}
 	}
@@ -123,14 +118,10 @@ void MUFVariability(struct PathData *path) {
 
 			// Now determine the probability that the mode can be supported
 			if(path->frequency < path->Md_E[i].MUF50) {
-				path->Md_E[i].Fprob = min((130 - (80.0/(1.0 + (path->Md_E[i].MUF50/(path->frequency*path->Md_E[i].deltal))))), 100.0);
-				bbProb = min(130.0 - (80.0 / (1.0 + ((1.0-(path->frequency/path->Md_E[i].MUF50))/(1.0-path->Md_E[i].deltal)))), 100.0);
-			} else { // (path->frequency >= path->Md_F2[i].MUF50)
-				path->Md_E[i].Fprob = max(((80.0/(1.0 + (path->frequency/(path->Md_E[i].MUF50*path->Md_E[i].deltau))))- 30.0), 0.0);
-				bbProb = max((80.0 / (1.0 + (((path->frequency/path->Md_E[i].MUF50)-1.0) / (path->Md_E[i].deltau - 1.0)))) - 30.0, 0.0);
+				path->Md_E[i].Fprob = min((1.3 - (0.8/((1.0 - (path->frequency/path->Md_E[i].MUF50))/(1.0 - path->Md_E[i].deltal)))), 1.0);
 			}
-			if (path->Md_F2[i].MUF50 == path->MUF50) {
-				path->Fprob = path->Md_E[i].Fprob;
+			else { // (path->frequency >= path->Md_F2[i].MUF50)
+				path->Md_E[i].Fprob = max(((0.8/((path->frequency/(path->Md_E[i].MUF50) - 1.0)/(path->Md_E[i].deltau - 1.0)))- 3.0), 0.0);
 			}
 		}
 	}
@@ -272,7 +263,7 @@ double FindfoF2var(struct PathData path, double hour, double lat, int decile) {
 };
 
 //////////////////////////////////////////////////////////////////////////////
-//      Copyright  International Telecommunication Union (ITU) 2018         //
+//      Copyright  International Telecommunication Union (ITU) 2019         //
 //                     All rights reserved.                                 //
 // No part of this publication may be reproduced, by any means whatsoever,  //
 //              without written permission of ITU                           //

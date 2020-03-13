@@ -276,15 +276,16 @@ DLLEXPORT int FreePathMemory(struct PathData *path) {
 	
 	// Free antenna array
 	azimuth = 360;
-  for (m=0; m < path->A_tx.freqn; m++) {
+	free(path->A_tx.freqs);
+	for (m=0; m < path->A_tx.freqn; m++) {
 		for (n=0; n<azimuth; n++) {
 			free(path->A_tx.pattern[m][n]);
 		}
 		free(path->A_tx.pattern[m]);
     }
 	free(path->A_tx.pattern);
-	free(path->A_tx.freqs);
 
+  free(path->A_rx.freqs);
 	for (m=0; m < path->A_rx.freqn; m++) {
 		for (n=0; n<azimuth; n++) {
 			free(path->A_rx.pattern[m][n]);
@@ -292,7 +293,6 @@ DLLEXPORT int FreePathMemory(struct PathData *path) {
 		free(path->A_rx.pattern[m]);
 	}
 	free(path->A_rx.pattern);
-	free(path->A_rx.freqs);
 
 	// Free the noise memory
 	retval = dllFreeNoiseMemory(&path->noiseP);
@@ -303,7 +303,7 @@ DLLEXPORT int FreePathMemory(struct PathData *path) {
 };
 
 //////////////////////////////////////////////////////////////////////////////
-//      Copyright  International Telecommunication Union (ITU) 2018         //
+//      Copyright  International Telecommunication Union (ITU) 2019         //
 //                     All rights reserved.                                 //
 // No part of this publication may be reproduced, by any means whatsoever,  //
 //              without written permission of ITU                           //
