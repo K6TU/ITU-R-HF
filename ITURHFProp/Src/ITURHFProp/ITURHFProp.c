@@ -49,13 +49,13 @@ int main(int argc, char *argv[]) {
 	 		that the P533 DLL will be used directly. This routine acts as an example of how the P533() model is used and what has to
 	 		be loaded in order to successfully conduct an analysis.
 	 		This routine is where changes to structure ITURHFProp ITURHFP are made and then passed to ITURHFProp().
-	 
+
 	 			INPUT
 	 				User data for an analysis using ITURHFProp() and P533() in the input file specified on command line.
-	 
+
 	 			OUTPUT
 	 				Typically an output Report or a path data dump file.
-	 
+
 	  ********************************************************************************************
 	  These software methods for the prediction of the performance of HF circuits based on
 	  Recommendations ITU-R P.533-14 and P.372-13
@@ -63,11 +63,11 @@ int main(int argc, char *argv[]) {
 	  Study Group 3. It may be used by implementers in their implementation of the Recommendation as well
 	  as in revisions of the specific original Recommendation and in other ITU Recommendations, free from
 	  any copyright assertions.
-	 
-	  This software is provided “as is” WITH NO WARRANTIES, EXPRESS OR IMPLIED,
+
+	  This software is provided ï¿½as isï¿½ WITH NO WARRANTIES, EXPRESS OR IMPLIED,
 	  INCLUDING BUT NOT LIMITED TO, THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
 	  AND NON-INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS.
-	 
+
 	  The ITU shall not be held liable in any event for any damages whatsoever (including, without
 	  limitation, damages for loss of profits, business interruption, loss of information, or any other
 	  pecuniary loss) arising out of or related to use of the software.
@@ -325,6 +325,16 @@ int main(int argc, char *argv[]) {
 		return retval;
 	};
 
+	// Close P533.dll ******************************
+#ifdef _WIN32
+	// See: https://docs.microsoft.com/en-gb/windows/win32/dlls/using-run-time-dynamic-linking
+	// NOT TESTED
+	FreeLibrary(hLib);
+#elif __linux__ || __APPLE__
+  dlclose(hLib);
+#endif
+	// End P533.DLL Close **************************
+
 	return RTN_MAINOK;
 };
 
@@ -527,4 +537,3 @@ void help(void)
 	printf("\t\tthe .\\Report file directory\n");
 	printf("\n");
 };
-
