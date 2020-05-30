@@ -8,19 +8,21 @@
 // End local includes
 
 /*
- * Allocates the Antenna structure (Part of the PathData struct).  This 
+ * Allocates the Antenna structure (Part of the PathData struct).  This
  * function is called when the antenna types have been defined which in
  * turn define the dimensions of the required data structure.
  */
 DLLEXPORT int AllocateAntennaMemory(struct Antenna *ant, int freqn, int azin, int elen) {
 	double *freqList;   // List of frequencies for which we have pattern data
-	double ***antpat;
+	double ***antpat;   // Array holding pattern data [frequency][azimuth][elevation]
 	int m, n;
-	
+
 	ant->freqn = freqn;
+	printf("Number of freqs: %d\n", ant->freqn);
 	freqList = (double *) malloc(ant->freqn * sizeof(double *));
 	if(freqList != NULL) {
 		ant->freqs = freqList;
+		printf("ant->freqs is allocated ok\n");
 	} else {
 		return RTN_ERRALLOCATEANT;
 	}
@@ -32,37 +34,37 @@ DLLEXPORT int AllocateAntennaMemory(struct Antenna *ant, int freqn, int azin, in
  			antpat[m][n] = (double*) malloc(elen * sizeof(double));
  		}
  	}
-	
+
 	if(antpat != NULL) {
 		ant->pattern = antpat;
 	} else {
 		return RTN_ERRALLOCATEANT;
 	}
-	
+
 	return RTN_ALLOCATEOK;
 
 }
 
 
 DLLEXPORT int AllocatePathMemory(struct PathData *path) {
-	
+
 	/*
 
 	  AllocatePathMemory() - Allocates the memory necessary for the path structure. The data must be read into these structures elsewhere.
-	 
+
 	 		INPUT
-	 			struct PathData *path	
-	 		
+	 			struct PathData *path
+
 	 		OUTPUT
 	 			path->foF2
 	 			path->M3kF2
 	 			path->foF2var
 	 			path->dud
-	 			path->fam 
-	 
+	 			path->fam
+
 	 		SUBROUTINES
 	 			None
-	 
+
 	 */
 
 	float ****foF2;			// foF2 ionospheric map
@@ -83,7 +85,7 @@ DLLEXPORT int AllocatePathMemory(struct PathData *path) {
 	lat = 121;	// 121 latitudes at 1.5 degree increments
 	ssn = 2;	// 2 SSN (12-month smoothed sun spot numbers) high and low
 
-	/* 
+	/*
 	 * Create the foF2 array so you can pass it into the core P.533 process.
 	 */
 	foF2 = (float****) malloc(hrs * sizeof(float***));
@@ -97,7 +99,7 @@ DLLEXPORT int AllocatePathMemory(struct PathData *path) {
 		};
 	};
 
-	/* 
+	/*
 	 * Create the M(3000)F2 array so you can pass it into the core P.533 process.
 	 */
 	M3kF2 = (float****) malloc(hrs * sizeof(float***));
@@ -109,22 +111,22 @@ DLLEXPORT int AllocatePathMemory(struct PathData *path) {
 				M3kF2[i][j][k] = (float*) malloc(ssn * sizeof(float));
 			};
 		};
-	};	
+	};
 
    /*
 	* Allocate the foF2 variablity arrays that will be used by the P533 engine.
 	*/
 	season = 3;	// 3 seasons
 				//		1) WINTER 2) EQUINOX 3) SUMMER
-	hrs = 24;	// 24 hours  
+	hrs = 24;	// 24 hours
 	lat = 19;	// 19 latitude by 5
 				//      0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90
 	ssn = 3;	// 3 SSN ranges
 				//		1) R12 < 50 2) 50 <= R12 <= 100 3) R12 > 100
-	decile = 2;	// 2 deciles 
+	decile = 2;	// 2 deciles
 				//	1) lower 2) upper
 
-	/* 
+	/*
 	 * Create the foF2 array so you can pass it into the core P.533 process.
 	 */
 	foF2var = (double*****) malloc(season * sizeof(double****));
@@ -162,10 +164,10 @@ DLLEXPORT int AllocatePathMemory(struct PathData *path) {
 	else return RTN_ERRALLOCATEFOF2VAR;
 
 	// P372.dll **********************************************************
-    
+
 	// Load the Noise routines in P372.dll ******************************
 #ifdef _WIN32
-	
+
 	int mod[512];
 
 	// Get the handle to the P372 DLL.
@@ -187,10 +189,10 @@ DLLEXPORT int AllocatePathMemory(struct PathData *path) {
 		exit(1);
 	};
 	dllAllocateNoiseMemory = dlsym(hLib, "AllocateNoiseMemory");
-#endif	
+#endif
 
 	// End P372.DLL Load ************************************************
-	
+
 	// Allocate the memory in the noise structure
 	retval = dllAllocateNoiseMemory(&path->noiseP);
 	if (retval != RTN_ALLOCATEOK) {
@@ -203,20 +205,20 @@ DLLEXPORT int AllocatePathMemory(struct PathData *path) {
 };
 
 
-DLLEXPORT int FreePathMemory(struct PathData *path) {	
+DLLEXPORT int FreePathMemory(struct PathData *path) {
 	/*
 
 	 	FreePath() - Frees the memory that was dynamically (m) allocated for the structure PathData path
-	 
+
 	 		INPUT
 	 			struct PathData *path
-	 
+
 	 		OUTPUT
 	 			void
-	 
+
 	 		SUBROUTINES
 	 			None
-	 
+
 	 */
 
 	int retval;
@@ -224,7 +226,7 @@ DLLEXPORT int FreePathMemory(struct PathData *path) {
 	int i, j, k, m, n;
 	int season;
 	int azimuth;
-	
+
 	/*
 	 * Free the ionospheric parameter arrays.
 	 */
@@ -256,9 +258,9 @@ DLLEXPORT int FreePathMemory(struct PathData *path) {
 	free(path->M3kF2);
 
 	// Free the foF2 variability memory
-	season = 3;	 
-	lat = 19;	
-	ssn = 3;	
+	season = 3;
+	lat = 19;
+	ssn = 3;
 
 	for (i=0; i<season; i++) {
 		for (j=0; j<hrs; j++) {
@@ -273,32 +275,44 @@ DLLEXPORT int FreePathMemory(struct PathData *path) {
 		free(path->foF2var[i]);
 	}
 	free(path->foF2var);
-	
+
 	// Free antenna array
 	azimuth = 360;
-	free(path->A_tx.freqs);
+
+	printf("path->A_tx.freqs is about to be freed\n");
+
+	free(path->A_tx.freqs); // HEAP CORRUPTION
+	path->A_tx.freqs = NULL;
+
 	for (m=0; m < path->A_tx.freqn; m++) {
 		for (n=0; n<azimuth; n++) {
 			free(path->A_tx.pattern[m][n]);
+			path->A_tx.pattern[m][n] = NULL;
 		}
 		free(path->A_tx.pattern[m]);
+		path->A_tx.pattern[m] = NULL;
     }
 	free(path->A_tx.pattern);
+	path->A_tx.pattern = NULL;
 
   free(path->A_rx.freqs);
+	path->A_rx.freqs = NULL;
+
 	for (m=0; m < path->A_rx.freqn; m++) {
 		for (n=0; n<azimuth; n++) {
 			free(path->A_rx.pattern[m][n]);
+			path->A_rx.pattern[m][n] = NULL;
 		}
 		free(path->A_rx.pattern[m]);
+		path->A_rx.pattern[m] = NULL;
 	}
 	free(path->A_rx.pattern);
+	path->A_rx.pattern = NULL;
 
 	// Free the noise memory
 	retval = dllFreeNoiseMemory(&path->noiseP);
 	if (retval != RTN_NOISEFREED) return retval; // check that the input parameters are correct
-	
+
 	return RTN_PATHFREED;
 
 };
-
