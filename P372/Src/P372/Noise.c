@@ -13,7 +13,7 @@ void AtmosphericNoise(struct NoiseParams *noiseP, int hour, double lng,
 											double lat, double frequency);
 void GalacticNoise(struct NoiseParams *noiseP, double frequency);
 void ManMadeNoise(struct NoiseParams *noiseP, double frequency);
-void GetFamParameters(struct NoiseParams *noiseP, struct FamStats *FS,		
+void GetFamParameters(struct NoiseParams *noiseP, struct FamStats *FS,
 	double lng, double lat, double frequency);
 // End Local prototypes
 
@@ -67,7 +67,7 @@ int Noise(struct NoiseParams *noiseP, int hour, double lng, double lat, double f
 			as in revisions of the specific original Recommendation and in other ITU Recommendations, free from
 			any copyright assertions.
 
-			This software is provided “as is” WITH NO WARRANTIES, EXPRESS OR IMPLIED,
+			This software is provided ï¿½as isï¿½ WITH NO WARRANTIES, EXPRESS OR IMPLIED,
 			INCLUDING BUT NOT LIMITED TO, THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
 			AND NON-INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS.
 
@@ -848,10 +848,10 @@ void AtmosphericNoise_LT(struct NoiseParams* noiseP, struct FamStats* FamS, int 
 
 	  AtmosphericNoise_LT() This is a utility subroutine is used to generate the atmospheric noise figures in Rec P.372-14
 	        This is a modification of AtmosphericNoise() above that uses the local time as the input and outputs
-			the full statistics of atmospheric noise.  
+			the full statistics of atmospheric noise.
 
 			INPUT
-				struct NoiseParams *noiseP This is used solely to pass in the arrays for the atmospheric noise 
+				struct NoiseParams *noiseP This is used solely to pass in the arrays for the atmospheric noise
 				struct FamStats *FamS
 				int lrxmt	 Local time
 				double lng   (rad)
@@ -924,10 +924,10 @@ void AtmosphericNoise_LT(struct NoiseParams* noiseP, struct FamStats* FamS, int 
 	// Interpolate is based on the local reciever mean time, lrxmt, and the 4 hour timeblock
 	slp = fmod(lrxmt, 4.0) / 4.0;
 
-	// Load the  return structure 
+	// Load the  return structure
 	fa = pow(10.0, (FS_now.FA / 10.0)) + (pow(10.0, (FS_adj.FA / 10.0)) - pow(10.0, (FS_now.FA / 10.0))) * slp;
 	FamS->FA = 10.0 * log10(fa);
-	
+
 	fa = pow(10.0, (FS_now.Du / 10.0)) + (pow(10.0, (FS_adj.Du / 10.0)) - pow(10.0, (FS_now.Du / 10.0))) * slp;
 	FamS->Du = 10.0 * log10(fa);
 
@@ -954,8 +954,9 @@ void AtmosphericNoise_LT(struct NoiseParams* noiseP, struct FamStats* FamS, int 
 /********************************************************************************************************/
 /*** BEGIN Windows __stdcall Interface routines to the Noise.c routines *********************************/
 /********************************************************************************************************/
-// All these silly functions do is allow that __stdcall can access __cdel functions. So that the P372.dll 
+// All these silly functions do is allow that __stdcall can access __cdel functions. So that the P372.dll
 // can interface to Windows program like Excel
+#ifdef _WIN32
 int __stdcall _AllocateNoiseMemory(struct NoiseParams* noiseP) {
 	int retval = AllocateNoiseMemory(noiseP);
 	return retval;
@@ -990,6 +991,7 @@ int __stdcall _MakeNoise(int month, int hour, double lat, double lng, double fre
 	int retval = MakeNoise(month, hour, lat, lng, freq, mmnoise, datafilepath, out, pntflag);
 	return retval;
 };
+#endif
 /********************************************************************************************************/
 /*** END Windows __stdcall Interface routines to the Noise.c routines ***********************************/
 /********************************************************************************************************/

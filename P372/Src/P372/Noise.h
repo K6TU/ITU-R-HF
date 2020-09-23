@@ -50,7 +50,7 @@
 #define RTN_NOISEFREED					23 // NoiseMemory.c FreeNoiseMemory()
 #define RTN_NOISEOK						24 // Noise()
 #define RTN_NOISEMANMADEOK				25 // Noise() Man-made noise override
-#define RTN_MAKENOISEOK					26 // MakeNoise() Stand alone P372 caller 
+#define RTN_MAKENOISEOK					26 // MakeNoise() Stand alone P372 caller
 
 
 /******************************* End Defines **********************************/
@@ -105,16 +105,18 @@ DLLEXPORT void AtmosphericNoise_LT(struct NoiseParams* noiseP, struct FamStats* 
 // Note: MakeNoise() requires decimal degrees lat and lng
 DLLEXPORT int MakeNoise(int month, int hour, double lat, double lng, double freq, double mmnoise, char* datafilepath, double* out, int pntflag);
 // _stdcall exports
-DLLEXPORT int __stdcall _AllocateNoiseMemory(struct NoiseParams* noiseP);
-DLLEXPORT int __stdcall _FreeNoiseMemory(struct NoiseParams* noiseP);
-DLLEXPORT int __stdcall _Noise(struct NoiseParams* noiseP, int hour, double rlng, double rlat, double frequency);
-DLLEXPORT int __stdcall _ReadFamDud(struct NoiseParams* noiseP, const char* DataFilePath, int month);
-DLLEXPORT void __stdcall _InitializeNoise(struct NoiseParams* noiseP);
-DLLEXPORT char  const* __stdcall _P372CompileTime();
-DLLEXPORT char  const* __stdcall _P372Version();
-DLLEXPORT void __stdcall _AtmosphericNoise_LT(struct NoiseParams* noiseP, struct FamStats* FamS, int lrxmt, double rlng, double rlat, double frequency);
-// Note: MakeNoise() requires decimal degrees lat and lng as input
-DLLEXPORT int __stdcall _MakeNoise(int month, int hour, double lat, double lng, double freq, double mmnoise, char* datafilepath, double* out, int pntflag);
+#ifdef _WIN32
+	DLLEXPORT int __stdcall _AllocateNoiseMemory(struct NoiseParams* noiseP);
+	DLLEXPORT int __stdcall _FreeNoiseMemory(struct NoiseParams* noiseP);
+	DLLEXPORT int __stdcall _Noise(struct NoiseParams* noiseP, int hour, double rlng, double rlat, double frequency);
+	DLLEXPORT int __stdcall _ReadFamDud(struct NoiseParams* noiseP, const char* DataFilePath, int month);
+	DLLEXPORT void __stdcall _InitializeNoise(struct NoiseParams* noiseP);
+	DLLEXPORT char  const* __stdcall _P372CompileTime();
+	DLLEXPORT char  const* __stdcall _P372Version();
+	DLLEXPORT void __stdcall _AtmosphericNoise_LT(struct NoiseParams* noiseP, struct FamStats* FamS, int lrxmt, double rlng, double rlat, double frequency);
+	// Note: MakeNoise() requires decimal degrees lat and lng as input
+	DLLEXPORT int __stdcall _MakeNoise(int month, int hour, double lat, double lng, double freq, double mmnoise, char* datafilepath, double* out, int pntflag);
+#endif
 // End Prototypes
 
 
@@ -164,4 +166,3 @@ DLLEXPORT int __stdcall _MakeNoise(int month, int hour, double lat, double lng, 
 // End operating system preprocessor *******************************************
 
 // End P372.DLL typedef ******************************************************
-
